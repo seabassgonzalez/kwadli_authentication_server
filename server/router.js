@@ -1,8 +1,10 @@
+// const authentication to store require for authentication controller
+
 // module.exports function passing it app
-	// add route that user can visit using app.get() passing it / and function taking request, response, and next
-		// res.send() an array of strings
+	// post request for user name and password to signup route using Authentication.signup
+ 
+const Authentication = require('./controllers/authentication');
+
 module.exports = function(app){
-	app.get('/', function(req, res, next){
-		res.send(['horizon', 'metalgear', 'fortnite']);
-	});
+	app.post('/signup', Authentication.signup);
 }
