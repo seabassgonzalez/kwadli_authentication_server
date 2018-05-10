@@ -4,6 +4,9 @@
 	// store email off the request using req.body
 	// store password off the request using req.body
 
+	// check if no email or password passed in
+		// respond with status 422 error must provide email and password
+
 	// see if a user with given email exists - use .findOne to search User class looking for property email equal to email from request and a callback for errors and possibly a matching user
 		// check if there was en error
 			// return next(error)
@@ -23,6 +26,10 @@ const User = require('../models/user');
 exports.signup = function(req,res,next){
 	const email = req.body.email;
 	const password = req.body.password;
+
+	if(!email || !password){
+		return res.status(422).send({ error: 'You must provide an email and password' });
+	}
 
 	User.findOne({email:email}, function(err, existingUser){
 		if(err){
