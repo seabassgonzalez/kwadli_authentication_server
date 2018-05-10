@@ -7,6 +7,7 @@
 	// password set to String type
 
 // Create the model class
+// create const ModelClass set to mongoose.model() passing it user and userSchema
 
 // Export the model
 
@@ -17,3 +18,7 @@ const userSchema = new Schema({
 	email: { type: String, unique: true, lowercase: true },
 	password: String
 });
+
+const ModelClass = mongoose.model('user', userSchema);
+
+module.exports = ModelClass;
