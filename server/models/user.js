@@ -3,7 +3,7 @@
 
 // Define model
 // create const userSchema that's a new Schema
-	// email set to String type
+	// email set to String type, but wrap in object and additional property to ensure user uniqueness
 	// password set to String type
 
 // Create the model class
@@ -14,6 +14,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-	email: String,
+	email: { type: String, unique: true },
 	password: String
 });
