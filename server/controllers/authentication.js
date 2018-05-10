@@ -1,4 +1,10 @@
-// store imported user model 
+// const User to store imported user model 
+// const jwt to store token library
+// const config to import config object
+
+// make a function tokenForUser that takes users id and encrypts it into a token
+	// create const for time stamp of when token issued
+	// return jwt.encode() encrypting user id, referencing object with subject property set to user.id, with config.secret string and issued at time for time stamp (sub and iat both by convention)
 
 // export a function signup that takes a request, response, and next for errors
 	// store email off the request using req.body
@@ -19,9 +25,16 @@
 		// save record using user.save() passing callback to know when complete takes error
 			// if error	
 				// return error
-			// respond to request indicating the user was created with res.json()
+			// respond to request indicating the user was created with res.json() passing back a token set to tokenForUser(user)
 
 const User = require('../models/user');
+const jwt = require('jwt-simple');
+const config = require('../config');
+
+function tokenForUser(user){
+	const timestamp = new Date().getTime();
+	return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
+}
 
 exports.signup = function(req,res,next){
 	const email = req.body.email;
@@ -46,7 +59,7 @@ exports.signup = function(req,res,next){
 			if(err){
 				return next(err);
 			}
-			res.json({ success: true });
+			res.json({ token: tokenForUser(user) });
 		});
 	});
 }
