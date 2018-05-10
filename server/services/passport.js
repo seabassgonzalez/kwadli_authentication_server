@@ -5,7 +5,9 @@
 // constact ExtractJwt to hold passport-jwt .ExtractJwt/
 
 // setup options for JWT Strategy
-// const jwtOptions set to empty object for now
+// const jwtOptions where can specify where to look on request to find key for strategy
+	// jwtFromRequest extracted fromHeader 'authorization' to find key
+	// secretOrKey to hold config.secret to decode 
 
 // create JWT Strategy
 // const jwtLogin set to new JwtStrategy() passing it jwtOptions and a callback taking payload and done
@@ -25,7 +27,10 @@ const config = require('../config');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 
-const jwtOptions = {};
+const jwtOptions = {
+	jwtFromRequest: ExtractJwt.fromHeader('authorization'), 
+	secretOrKey: config.secret
+};
 
 const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done){
 	User.findById(payload.sub, function(err, user){
@@ -39,3 +44,5 @@ const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done){
 		}
 	});
 });
+
+passport.use(jwtLogin);
