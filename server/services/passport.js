@@ -2,7 +2,18 @@
 // const User to hold models user
 // const config to hold config file with client secret
 // const JwtStrategy to hold passport-jwt .strategy
-// constact ExtractJwt to hold passport-jwt .ExtractJwt/
+// const ExtractJwt to hold passport-jwt .ExtractJwt/
+// const LocalStrategy to hold passport-local library
+
+// create const for local options set to object with usernameField set to email string -- local strategy expects a username so just specifying where to find an equivalent on the email property of the request
+// create local strategy to authenticate user with email and password, then can go on to another route handler that will give them jwt token
+// const localLogin = new LocalStrategy() passing it local options and a call back with email password done
+	// verify email and password exists by searching through User class, supply callback taking error and user
+		// if error
+			// return early with error object done(err)
+		// if no user
+			// return done passing null and false
+		// compare passwords is 'password' equal to user.password
 
 // setup options for JWT Strategy
 // const jwtOptions where can specify where to look on request to find key for strategy
@@ -26,6 +37,19 @@ const User = require('../models/user');
 const config = require('../config');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
+const LocalStrategy = require('passport-local');
+
+const localOptions = { usernameField: 'email' };
+const localLogin = new LocalStrategy(localOptions, function(email, password, done){
+	User.findOne({ email: email }, function(err, user){
+		if(err){
+			return done(err);
+		}
+		if(!user){
+			return done(null, false);
+		}
+	});
+ });
 
 const jwtOptions = {
 	jwtFromRequest: ExtractJwt.fromHeader('authorization'), 

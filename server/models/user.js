@@ -19,6 +19,12 @@
 			// user.password = hash -- to overwrite plaintext password with resulting encrypted hash password
 			// next
 
+// create method comparePassword on userSchema.methods so that every user has access, pass it possiblePassword and a callback
+	// use bcrypt compare() method passing it possiblePassword, this.password, and a function taking error and isMatch
+		// if error
+			// return callback(error)
+		// callback(null, isMatch)
+
 // Create the model class
 // create const ModelClass set to mongoose.model() passing it user and userSchema
 
@@ -48,6 +54,15 @@ userSchema.pre('save', function(next){
 		});
 	});
 });
+
+userSchema.methods.comparePassword = function(possiblePassword, callback){
+	bcrypt.compare(possiblePassword, this.password, function(err, isMatch){
+		if(err){
+			return callback(err);
+		}
+		callback(null, isMatch);
+	});
+}
 
 const ModelClass = mongoose.model('user', userSchema);
 
