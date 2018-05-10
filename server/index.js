@@ -6,6 +6,8 @@
 // create const app to hold instance of express()
 
 // Setup App
+// call app.use() passing it middleware morgan('combined') - any incoming request will pass through these two
+// call app.use() passing it middleware bodyParser.json() passing that an object with prop type set to */*
 
 // Setup Server
 // create const port set to process.env.PORT or || 3090
@@ -18,6 +20,9 @@ const http = require('http');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const app = express();
+
+app.use(morgan('combined'));
+app.use(bodyParser.json({type: '*/*'}));
 
 const port = process.env.PORT || 3090;
 const server = http.createServer(app);
