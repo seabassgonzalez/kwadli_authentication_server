@@ -5,6 +5,10 @@
 // create const morgan to hold require morgan
 // create const app to hold instance of express()
 // create const router to hold require router
+// create const mongoose set to require mongoose
+
+// Setup Database
+// mongoose.connect() passing it mongodb://localhost:auth/auth or auth/someDatabaseName
 
 // Setup App
 // call app.use() passing it middleware morgan('combined') - any incoming request will pass through these two
@@ -23,6 +27,9 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const app = express();
 const router = require('./router');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/auth');
 
 app.use(morgan('combined'));
 app.use(bodyParser.json({type: '*/*'}));
