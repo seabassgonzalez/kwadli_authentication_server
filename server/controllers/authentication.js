@@ -6,6 +6,9 @@
 	// create const for time stamp of when token issued
 	// return jwt.encode() encrypting user id, referencing object with subject property set to user.id, with config.secret string and issued at time for time stamp (sub and iat both by convention)
 
+// make a function signin taking request response next - user already has email and password auth'd just need to give token - need to access current user model can get from passport done method which makes it available as req.user
+	// response send object with property token: call to tokenForUser(req.user)
+
 // export a function signup that takes a request, response, and next for errors
 	// store email off the request using req.body
 	// store password off the request using req.body
@@ -34,6 +37,10 @@ const config = require('../config');
 function tokenForUser(user){
 	const timestamp = new Date().getTime();
 	return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
+}
+
+exports.signin = function(req, res, next){
+	res.send({ token: tokenForUser(req.user) });
 }
 
 exports.signup = function(req,res,next){

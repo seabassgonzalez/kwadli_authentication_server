@@ -27,10 +27,16 @@
 			// return error and false, no user
 		// if user
 			// call done(null, user)
-		// else
-			// call done(null, false)
+		// call user.comparePassword from schema with password and callback to handle err and isMatch
+			// if error
+				// return early with error
+			// if isn't a match
+				// return null, false
+			// return 
+				// null, user
 
 // tell passport to use this strategy
+// tell passport to use localLogin
 
 const passport = require('passport');
 const User = require('../models/user');
@@ -48,6 +54,15 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
 		if(!user){
 			return done(null, false);
 		}
+		user.comparePassword(password, function(err, isMatch){
+			if(err){
+				return done(err);
+			}
+			if(!isMatch){
+				return done(null, false);
+			}
+			return done(null, user);
+		});
 	});
  });
 
@@ -70,3 +85,4 @@ const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done){
 });
 
 passport.use(jwtLogin);
+passport.use(localLogin);
